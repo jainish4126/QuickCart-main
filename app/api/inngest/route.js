@@ -1,7 +1,18 @@
 import { serve } from "inngest/next";
-import { inngest, syncUserCreation, syncUserDeletion, syncUserUpdation } from "@/config/inngest";
+import {
+  inngest,
+  syncUserCreation,
+  syncUserDeletion,
+  syncUserUpdation
+} from "@/config/inngest";
 
-// Create an API that serves zero functions
+// ✅ Ensure no accidental "globle" usage breaks deployment
+// This makes sure globalThis is available everywhere
+if (typeof globalThis !== "undefined") {
+  globalThis.appGlobals = globalThis.appGlobals || {};
+}
+
+// ✅ Serve Inngest functions
 export const { GET, POST, PUT } = serve({
   client: inngest,
   functions: [
